@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index of /</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+            background-color: #fff;
+        }
+        h1 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            text-align: left;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #search-bar {
+            width: 200px;
+            padding: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+        }
+        #modal input {
+            width: calc(100% - 10px);
+            margin-bottom: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        #modal button {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Index of /</h1>
+
+    <input type="text" id="search-bar" onkeyup="searchLinks()" placeholder="Search...">
+
+    <button onclick="showModal()">Add Link</button>
+
+    <div id="modal">
+        <form id="form">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" placeholder="e.g., Google"><br>
+            <label for="url">URL:</label><br>
+            <input type="text" id="url" placeholder="e.g., https://www.google.com"><br>
+            <label for="description">Description:</label><br>
+            <input type="text" id="description" placeholder="e.g., Search Engine"><br><br>
+            <button type="button" onclick="addLink()">Add</button>
+            <button type="button" onclick="closeModal()">Close</button>
+        </form>
+    </div>
+
+    <table id="link-table">
+        <tr>
+            <th>Name</th>
+            <th>URL</th>
+            <th>Description</th>
+        </tr>
+    </table>
+
+    <script>
+        function showModal() {
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function addLink() {
+            const name = document.getElementById('name').value.trim();
+            const url = document.getElementById('url').value.trim();
+            const description = document.getElementById('description').value.trim();
+
+            if (!name || !url) {
+                alert('Please fill out both the Name and URL fields.');
+                return;
+            }
+
+            const table = document.getElementById('link-table');
+            const newRow = table.insertRow();
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+
+            cell1.innerHTML = `<a href="${url}" target="_blank">${name}</a>`;
+            cell2.textContent = url;
+            cell3.textContent = description;
+
+            document.getElementById('form').reset();
+            closeModal();
+        }
+
+        function searchLinks() {
+            const filter = document.getElementById('search-bar').value.toLowerCase();
+            const table = document.getElementById('link-table');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        if (cells[j].textContent.toLowerCase().indexOf(filter) > -1) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
+    </script>
+</body>
+</html>
