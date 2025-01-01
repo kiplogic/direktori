@@ -103,6 +103,37 @@
             document.getElementById('modal').style.display = 'none';
         }
 
+        function saveToLocalStorage() {
+            const rows = document.querySelectorAll('#link-table tr');
+            const links = [];
+            rows.forEach((row, index) => {
+                if (index > 0) { // Skip the header row
+                    const cells = row.querySelectorAll('td');
+                    links.push({
+                        name: cells[0].textContent,
+                        url: cells[1].textContent,
+                        description: cells[2].textContent,
+                    });
+                }
+            });
+            localStorage.setItem('links', JSON.stringify(links));
+        }
+
+        function loadFromLocalStorage() {
+            const links = JSON.parse(localStorage.getItem('links')) || [];
+            const table = document.getElementById('link-table');
+            links.forEach(link => {
+                const newRow = table.insertRow();
+                const cell1 = newRow.insertCell(0);
+                const cell2 = newRow.insertCell(1);
+                const cell3 = newRow.insertCell(2);
+
+                cell1.innerHTML = `<a href="${link.url}" target="_blank">${link.name}</a>`;
+                cell2.textContent = link.url;
+                cell3.textContent = link.description;
+            });
+        }
+
         function addLink() {
             const name = document.getElementById('name').value.trim();
             const url = document.getElementById('url').value.trim();
@@ -123,6 +154,7 @@
             cell2.textContent = url;
             cell3.textContent = description;
 
+            saveToLocalStorage(); // Save to Local Storage
             document.getElementById('form').reset();
             closeModal();
         }
@@ -148,6 +180,9 @@
                 rows[i].style.display = match ? '' : 'none';
             }
         }
+
+        // Load data from Local Storage when the page loads
+        document.addEventListener('DOMContentLoaded', loadFromLocalStorage);
     </script>
 </body>
 </html>
