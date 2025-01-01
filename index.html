@@ -149,27 +149,7 @@
             });
         }
 
-        function sendToGoogleSheet(name, url, description) {
-            const scriptURL = "YOUR_GOOGLE_APPS_SCRIPT_URL"; // Ganti dengan URL Web App Anda
-
-            fetch(scriptURL, {
-                method: "POST",
-                body: JSON.stringify({ name, url, description }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-            .then((response) => {
-                if (response.ok) {
-                    console.log("Data sent to Google Sheet successfully");
-                } else {
-                    console.error("Failed to send data");
-                }
-            })
-            .catch((error) => console.error("Error:", error));
-        }
-
-        function addLink() {
+                function addLink() {
             const name = document.getElementById('name').value.trim();
             const url = document.getElementById('url').value.trim();
             const description = document.getElementById('description').value.trim();
@@ -191,8 +171,7 @@
             cell3.textContent = description;
             cell4.innerHTML = `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
 
-            sendToGoogleSheet(name, url, description); // Kirim data ke Google Sheets
-            saveToLocalStorage(); // Save to Local Storage
+                        saveToLocalStorage(); // Save to Local Storage
             document.getElementById('form').reset();
             closeModal();
         }
