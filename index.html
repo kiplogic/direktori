@@ -134,6 +134,26 @@
             });
         }
 
+        function sendToGoogleSheet(name, url, description) {
+            const scriptURL = "https://script.google.com/macros/s/AKfycbzOjOVmeG3l0Dpp-eVlwy-fW3K1DjvRM1bB2OL56HuZhcmYCzp9QDDFyahWzvEcNa6YwQ/exec"; // Ganti dengan URL Web App Anda
+
+            fetch(scriptURL, {
+                method: "POST",
+                body: JSON.stringify({ name, url, description }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Data sent to Google Sheet successfully");
+                } else {
+                    console.error("Failed to send data");
+                }
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+
         function addLink() {
             const name = document.getElementById('name').value.trim();
             const url = document.getElementById('url').value.trim();
@@ -154,6 +174,7 @@
             cell2.textContent = url;
             cell3.textContent = description;
 
+            sendToGoogleSheet(name, url, description); // Kirim data ke Google Sheets
             saveToLocalStorage(); // Save to Local Storage
             document.getElementById('form').reset();
             closeModal();
